@@ -1,0 +1,2064 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Darshan S — v2.0 (Portfolio)</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- GSAP for smoother, pro animations (optional; if blocked page still works) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+
+  <style>
+    /* ===== Reset & Base ===== */
+    :root {
+      --max-w: 1200px;
+      --nav-h: 72px;
+      --glass: rgba(255, 255, 255, 0.04);
+      --muted: #b6bfd0;
+      --accent1: #ff5d9f;
+      --accent2: #9b7bff;
+      --accent3: #5eead4;
+      --bg-dark: #071029;
+      --card-bg: rgba(255, 255, 255, 0.03);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html,
+    body {
+      height: 100%;
+      font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: #fff;
+      background: var(--bg-dark);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block
+    }
+
+    /* ===== Animated multicolor background layers ===== */
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: -5;
+      pointer-events: none;
+      overflow: hidden;
+      background: linear-gradient(135deg, #071029 0%, #0b1320 25%, #071029 100%);
+    }
+
+    .bg .blob {
+      position: absolute;
+      width: 120vmax;
+      height: 120vmax;
+      left: -10vmax;
+      top: -20vmax;
+      background: conic-gradient(from 90deg, rgba(255, 93, 159, 0.18), rgba(255, 178, 127, 0.16), rgba(155, 123, 255, 0.14), rgba(94, 234, 212, 0.12));
+      filter: blur(80px) saturate(120%);
+      transform: rotate(0deg);
+      animation: spin 24s linear infinite;
+      mix-blend-mode: screen;
+    }
+
+    .bg .overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.02), transparent 10%), radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.01), transparent 10%);
+      filter: blur(40px);
+      mix-blend-mode: overlay;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0)
+      }
+
+      100% {
+        transform: rotate(360deg)
+      }
+    }
+
+    /* ===== Page layout ===== */
+    .site {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ===== Header / nav ===== */
+    header.site-header {
+      position: fixed;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: var(--max-w);
+      z-index: 100;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 16px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+      box-shadow: 0 8px 30px rgba(3, 6, 15, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(8px) saturate(120%);
+    }
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      color: #041022;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
+      background-size: 300% 300%;
+      animation: logoShift 7s linear infinite;
+      box-shadow: 0 8px 30px rgba(155, 123, 255, 0.12), inset 0 -6px 12px rgba(255, 255, 255, 0.06);
+    }
+
+    @keyframes logoShift {
+      0% {
+        background-position: 0% 50%
+      }
+
+      50% {
+        background-position: 100% 50%
+      }
+
+      100% {
+        background-position: 0% 50%
+      }
+    }
+
+    .brand .brand-name {
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.2px;
+      color: #fff
+    }
+
+    nav.site-nav {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    nav.site-nav a {
+      padding: 8px 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 600;
+      font-size: 14px;
+      transition: all .22s;
+    }
+
+    nav.site-nav a:hover,
+    nav.site-nav a.active {
+      color: #041022;
+      background: linear-gradient(90deg, var(--accent2), var(--accent1));
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(100, 70, 255, 0.12);
+    }
+
+    .mobile-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 20px
+    }
+
+    /* ===== Hero / Intro ===== */
+    main {
+      width: 100%;
+      margin-top: 120px;
+      padding-bottom: 60px;
+    }
+
+    .hero {
+      width: 100%;
+      min-height: calc(100vh - 160px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 20px;
+    }
+
+    .hero-inner {
+      width: 100%;
+      max-width: var(--max-w);
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .hero-left {
+      text-align: left;
+    }
+
+    .kicker {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent1));
+      color: #041022;
+      box-shadow: 0 8px 20px rgba(155, 123, 255, 0.06);
+      margin-bottom: 18px;
+    }
+
+    h1.title {
+      font-size: 44px;
+      line-height: 1.03;
+      margin-bottom: 14px;
+      color: #fff;
+    }
+
+    p.lead {
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 65ch;
+      line-height: 1.6;
+    }
+
+    .cta {
+      margin-top: 22px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      color: #fff;
+      background: linear-gradient(90deg, #6d8bff, #ff6a88);
+      box-shadow: 0 10px 30px rgba(109, 139, 255, 0.12);
+      transition: transform .2s ease;
+    }
+
+    .btn.secondary {
+      background: linear-gradient(90deg, var(--accent3), var(--accent2))
+    }
+
+    .btn:hover {
+      transform: translateY(-6px)
+    }
+
+    .hero-card {
+      width: 100%;
+      max-width: 420px;
+      min-height: 420px;
+      border-radius: 18px;
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      box-shadow: 0 12px 40px rgba(3, 6, 15, 0.6);
+    }
+
+    .ns-avatar {
+      width: 220px;
+      height: 220px;
+      border-radius: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 56px;
+      color: #041022;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2), var(--accent3));
+      background-size: 300% 300%;
+      animation: avatarShift 9s linear infinite;
+      box-shadow: 0 14px 40px rgba(9, 14, 30, 0.6);
+    }
+
+    @keyframes avatarShift {
+      0% {
+        background-position: 0% 50%
+      }
+
+      50% {
+        background-position: 100% 50%
+      }
+
+      100% {
+        background-position: 0% 50%
+      }
+    }
+
+    /* floating small shapes (inside hero) */
+    .hero-shapes {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    /* ===== Section common styles ===== */
+    .section {
+      width: 100%;
+      max-width: var(--max-w);
+      margin: 40px auto;
+      padding: 26px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      box-shadow: 0 10px 30px rgba(3, 6, 15, 0.45);
+    }
+
+    .section h2 {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+
+    .muted {
+      color: var(--muted);
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .cols-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cols-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .card {
+      padding: 14px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid rgba(255, 255, 255, 0.02);
+    }
+
+    .card h3 {
+      margin-bottom: 6px
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 13px
+    }
+
+    /* Skills chips */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.02);
+      font-weight: 700;
+      font-size: 13px;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.02)
+    }
+
+    /* Projects */
+    .project {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .thumb {
+      width: 84px;
+      height: 64px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+      border: 1px solid rgba(255, 255, 255, 0.03)
+    }
+
+    /* Testimonials */
+    .testimonials {
+      display: grid;
+      gap: 12px;
+    }
+
+    .testi {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .testi img {
+      width: 56px;
+      height: 56px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    /* Stats row */
+    .stats {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .stat {
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      min-width: 120px;
+      text-align: center;
+    }
+
+    /* Services */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    /* Contact */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 18px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical
+    }
+
+    /* Footer */
+    footer.site-footer {
+      max-width: var(--max-w);
+      width: 100%;
+      margin: 30px auto;
+      padding: 18px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--muted)
+    }
+
+    .socials {
+      display: flex;
+      gap: 10px;
+    }
+
+    .socials a {
+      display: inline-flex;
+      width: 40px;
+      height: 40px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      color: #fff;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.02)
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width:1100px) {
+      .hero-inner {
+        grid-template-columns: 1fr 360px;
+      }
+
+      .ns-avatar {
+        width: 200px;
+        height: 200px;
+        font-size: 48px
+      }
+    }
+
+    @media (max-width:820px) {
+      header.site-header {
+        left: 12px;
+        right: 12px;
+        width: auto;
+        transform: none;
+        border-radius: 12px
+      }
+
+      nav.site-nav {
+        display: none
+      }
+
+      .mobile-toggle {
+        display: block
+      }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center
+      }
+
+      .hero-left {
+        text-align: center
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cols-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .cols-3 {
+        grid-template-columns: 1fr;
+      }
+
+      footer.site-footer {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px
+      }
+    }
+
+    @media (max-width:480px) {
+      h1.title {
+        font-size: 28px
+      }
+
+      .kicker {
+        font-size: 12px;
+        padding: 6px 10px
+      }
+
+      .btn {
+        padding: 10px 14px;
+        font-size: 13px
+      }
+
+      header.site-header {
+        height: 64px
+      }
+    }
+
+    /* small utility */
+    .center {
+      text-align: center
+    }
+
+    /* === PRELOADER === */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #02010a, #000);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999;
+      overflow: hidden;
+    }
+
+    .loader-content {
+      text-align: center;
+    }
+
+    /* === SVG Neon Outline === */
+    .logo-svg {
+      width: 240px;
+      height: auto;
+    }
+
+    .logo-outline {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 900;
+      font-size: 72px;
+      fill: none;
+      stroke: url(#neonGradient);
+      stroke-width: 3;
+      stroke-linejoin: round;
+      stroke-dasharray: 600;
+      stroke-dashoffset: 600;
+      animation: tracePath 3s linear infinite, glowCycle 5s linear infinite;
+      filter: drop-shadow(0 0 10px #0ff) drop-shadow(0 0 25px #0ff);
+    }
+
+    /* === Stroke Animation === */
+    @keyframes tracePath {
+      0% {
+        stroke-dashoffset: 600;
+      }
+
+      50% {
+        stroke-dashoffset: 0;
+      }
+
+      100% {
+        stroke-dashoffset: -600;
+      }
+    }
+
+    /* === Neon Color Cycle === */
+    @keyframes glowCycle {
+      0% {
+        stroke: #00ffff;
+        filter: drop-shadow(0 0 10px #00ffff);
+      }
+
+      25% {
+        stroke: #ff00ff;
+        filter: drop-shadow(0 0 10px #ff00ff);
+      }
+
+      50% {
+        stroke: #ffff00;
+        filter: drop-shadow(0 0 10px #ffff00);
+      }
+
+      75% {
+        stroke: #00ff99;
+        filter: drop-shadow(0 0 10px #00ff99);
+      }
+
+      100% {
+        stroke: #00ffff;
+        filter: drop-shadow(0 0 10px #00ffff);
+      }
+    }
+
+    .loader-text {
+      color: #bbb;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 1rem;
+      margin-top: 20px;
+      opacity: 0.8;
+      letter-spacing: 2px;
+      animation: fadeIn 1.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0.5;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Fade out loader */
+    .fade-out {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 1s ease, visibility 1s ease;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .logo-svg {
+        width: 160px;
+      }
+
+      .loader-text {
+        font-size: 0.85rem;
+      }
+    }
+
+    /* === Timeline Layout === */
+    .timeline-container {
+      position: relative;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    /* Glowing line down the center */
+    .timeline-container::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+      background: linear-gradient(to bottom, #00ffff, #ff00ff, #ffff00, #00ff99);
+      box-shadow: 0 0 12px #0ff, 0 0 25px #ff0, 0 0 40px #f0f;
+      background-size: 300% 300%;
+      animation: glowLine 6s linear infinite;
+    }
+
+    /* Alternating sides */
+    .timeline-item {
+      position: relative;
+      width: 50%;
+      padding: 20px 40px;
+      box-sizing: border-box;
+    }
+
+    .timeline-item.left {
+      left: 0;
+      text-align: right;
+    }
+
+    .timeline-item.right {
+      left: 50%;
+      text-align: left;
+    }
+
+    /* Dots at connection points */
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 15px;
+      border-radius: 50%;
+      background: #0ff;
+      z-index: 1;
+      box-shadow: 0 0 12px #0ff, 0 0 25px #ff0, 0 0 40px #f0f;
+    }
+
+    .timeline-item.left::after {
+      right: -10px;
+    }
+
+    .timeline-item.right::after {
+      left: -10px;
+    }
+
+    /* Content cards */
+    .timeline-item .content {
+      position: relative;
+      padding: 14px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 10px 30px rgba(3, 6, 15, 0.5);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .timeline-item .content:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 14px 40px rgba(94, 234, 212, 0.3);
+    }
+
+    .timeline-item .content .date {
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* Glowing animation for the center line */
+    @keyframes glowLine {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* ===== Responsive (Mobile View) ===== */
+    @media (max-width: 820px) {
+      .timeline-container::after {
+        left: 8px;
+      }
+
+      .timeline-item {
+        width: 100%;
+        padding-left: 40px;
+        padding-right: 0;
+        text-align: left !important;
+      }
+
+      .timeline-item::after {
+        left: 0;
+      }
+
+      .timeline-item.left,
+      .timeline-item.right {
+        left: 0;
+      }
+    }
+
+    /* === Leadership Cards === */
+    .leadership-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 22px;
+      margin-top: 20px;
+    }
+
+    .main-card {
+      position: relative;
+      padding: 20px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 12px 30px rgba(3, 6, 15, 0.5);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .main-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 14px 40px rgba(94, 234, 212, 0.3);
+    }
+
+    /* Inner cards */
+    .sub-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .sub-card {
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      transition: all 0.25s ease;
+    }
+
+    .sub-card:hover {
+      background: rgba(94, 234, 212, 0.08);
+      border-color: rgba(94, 234, 212, 0.3);
+      transform: translateX(6px);
+    }
+
+    .sub-card h4 {
+      font-size: 15px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .sub-card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* === Language Section === */
+    .languages {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .lang-item span {
+      font-weight: 600;
+      color: #fff;
+      font-size: 15px;
+    }
+
+    .rating-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .rating-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #9b7bff, #6d9fff);
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+
+    .level {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* === Neon Multicolor Tamil Text === */
+    .neon-text {
+      font-weight: 800;
+      font-size: 1.1em;
+      background: linear-gradient(90deg, #ff00ff, #00ffff, #ffff00, #ff00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: neonGlow 3s linear infinite, colorShift 6s ease-in-out infinite;
+      text-shadow: 0 0 8px rgba(255, 0, 255, 0.6),
+        0 0 16px rgba(0, 255, 255, 0.4),
+        0 0 24px rgba(255, 255, 0, 0.3);
+    }
+
+    /* Glow Pulse Animation */
+    @keyframes neonGlow {
+
+      0%,
+      100% {
+        text-shadow: 0 0 6px rgba(255, 0, 255, 0.6),
+          0 0 14px rgba(0, 255, 255, 0.4),
+          0 0 22px rgba(255, 255, 0, 0.3);
+      }
+
+      50% {
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.8),
+          0 0 24px rgba(255, 0, 255, 0.6),
+          0 0 36px rgba(255, 255, 0, 0.4);
+      }
+    }
+
+    /* Slow Gradient Movement */
+    @keyframes colorShift {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* === Interactive Chips with Neon Hover === */
+    .chip {
+      position: relative;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      font-weight: 600;
+      font-size: 13px;
+      color: #fff;
+      letter-spacing: 0.3px;
+      cursor: default;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+    }
+
+    /* Neon Glow on Hover */
+    .chip:hover {
+      background: linear-gradient(90deg, #9b7bff, #ff6a88, #5eead4);
+      background-size: 200% 200%;
+      animation: chipGlow 2.5s linear infinite;
+      color: #041022;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 0 12px rgba(155, 123, 255, 0.4),
+        0 0 24px rgba(255, 106, 136, 0.3),
+        0 0 36px rgba(94, 234, 212, 0.3);
+    }
+
+    /* Smooth Gradient Shift Animation */
+    @keyframes chipGlow {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* === Neon Thumbnails === */
+    .neon-thumb {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #9b7bff, #ff6a88, #5eead4);
+      background-size: 200% 200%;
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+      box-shadow: 0 0 10px rgba(155, 123, 255, 0.4);
+      animation: neonShift 3s linear infinite;
+      transition: all 0.35s ease;
+    }
+
+    /* Hover Glow */
+    .project:hover .neon-thumb {
+      transform: scale(1.15) rotate(6deg);
+      box-shadow: 0 0 16px rgba(155, 123, 255, 0.6),
+        0 0 28px rgba(255, 106, 136, 0.5),
+        0 0 42px rgba(94, 234, 212, 0.4);
+    }
+
+    /* Animate gradient movement */
+    @keyframes neonShift {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* Card layout tweaks */
+    .card.project {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 12px 16px;
+    }
+
+    /* Hover lift */
+    .card.project:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 14px rgba(155, 123, 255, 0.2);
+    }
+
+    .stats.chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .stats .chip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 18px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      min-width: 140px;
+      text-align: center;
+    }
+
+    .stats .chip:hover {
+      transform: translateY(-6px);
+      background: linear-gradient(135deg, #9b7bff, #ff6a88, #5eead4);
+      box-shadow: 0 8px 24px rgba(155, 123, 255, 0.3), 0 0 20px rgba(255, 106, 136, 0.3), 0 0 28px rgba(94, 234, 212, 0.2);
+    }
+
+    .stats .stat-number {
+      font-size: 22px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #9b7bff, #ff6a88, #5eead4);
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .stats .chip:hover .stat-number {
+      text-shadow: 0 0 12px #9b7bff, 0 0 20px #ff6a88, 0 0 28px #5eead4;
+    }
+
+    .stats .level {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+
+    /* Card buttons container */
+    .card-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    /* Common button styles */
+    .card .btn {
+      display: inline-block;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #fff;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      min-width: 100px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <script>
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("preloader");
+
+      // Record page load time
+      const loadTime = Date.now();
+
+      // Minimum 5 seconds display
+      const minDisplayTime = 5000;
+
+      // Calculate remaining time
+      const elapsed = Date.now() - loadTime;
+      const remaining = Math.max(0, minDisplayTime - elapsed);
+
+      setTimeout(() => loader.classList.add("fade-out"), remaining);
+    });
+  </script>
+
+
+  <!-- PRELOADER -->
+  <div id="preloader">
+    <div class="loader-content">
+      <svg class="logo-svg" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="neonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00ffff" />
+            <stop offset="50%" stop-color="#ff00ff" />
+            <stop offset="100%" stop-color="#00ff99" />
+          </linearGradient>
+        </defs>
+        <text x="10" y="70" class="logo-outline">NS</text>
+      </svg>
+    </div>
+  </div>
+
+
+  <div class="bg" aria-hidden="true">
+    <div class="blob"></div>
+    <div class="overlay"></div>
+  </div>
+
+  <div class="site">
+    <!-- Header / Navigation -->
+    <header class="site-header" role="banner" aria-label="Main navigation">
+      <a class="brand" href="#intro" aria-label="Darshan S">
+        <div class="logo" id="logoNS">NS</div>
+        <div class="brand-name">Darshan S</div>
+      </a>
+
+      <nav class="site-nav" role="navigation" aria-label="Sections">
+        <a href="#intro" class="nav-link active" data-target="intro">Intro</a>
+        <a href="#about" class="nav-link" data-target="about">About Me</a>
+        <a href="#experience" class="nav-link" data-target="experience">Experience</a>
+        <a href="#education" class="nav-link" data-target="education">Education</a>
+        <a href="#skills" class="nav-link" data-target="skills">Skills</a>
+        <a href="#works" class="nav-link" data-target="works">Works</a>
+        <a href="#services" class="nav-link" data-target="services">Services</a>
+        <a href="game.html" target="_blank" rel="noopener" class="nav-link">Game</a>
+        <a href="#contact" class="nav-link" data-target="contact">Contact</a>
+      </nav>
+
+      <button class="mobile-toggle" aria-label="Open menu" title="Menu">☰</button>
+    </header>
+
+    <!-- Main content -->
+    <main>
+      <!-- HERO / INTRO -->
+      <section id="intro" class="hero" role="region" aria-labelledby="intro-title">
+        <div class="hero-inner">
+          <div class="hero-left">
+            <div class="kicker">System Coordinator • Innovator • Lifelong Learner</div>
+
+            <h1 class="title" id="intro-title">
+              Hi, I'm
+              <span
+                style="background:linear-gradient(90deg,var(--accent3),var(--accent2)); -webkit-background-clip:text; color:transparent">
+                Darshan
+              </span>
+              — shaping the unseen backbone of the digital world, one network at a time.
+            </h1>
+
+            <p class="lead">
+              as a System Coordinator at KMCH-IHSR, 
+              where I design and maintain highly connected and resilient network infrastructures for seamless digital operations. 
+              While pursuing my MCA at Bharathiyar University, I blend academic knowledge of systems architecture with practical 
+              application to optimize performance and uptime.
+            </p>
+
+            <div class="cta">
+              <a class="btn" href="#works">Explore Works ↓</a>
+              <a class="btn secondary" href="#contact">Get in Touch</a>
+            </div>
+          </div>
+
+          <aside class="hero-card" aria-hidden="false">
+            <div class="ns-avatar" id="ns-avatar" title="NS">NS</div>
+            <div class="hero-shapes" aria-hidden="true">
+              <!-- decorative shapes -->
+              <svg style="position:absolute; left:-40px; top:10px; width:140px; opacity:0.08" viewBox="0 0 200 40"
+                xmlns="http://www.w3.org/2000/svg">
+                <rect width="200" height="40" rx="12" fill="#ffb27f" />
+              </svg>
+              <svg style="position:absolute; right:-30px; bottom:40px; width:120px; opacity:0.06" viewBox="0 0 100 100"
+                xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="50" fill="#5eead4" />
+              </svg>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+
+      <!-- ABOUT -->
+      <section id="about" class="section" role="region" aria-labelledby="about-title">
+        <h2 id="about-title">About Me</h2>
+        <span class="muted">Who I am ?</span>
+
+        <div class="grid" style="margin-top:12px">
+          <div class="card">
+            <p style="line-height:1.7; color:var(--muted)">
+              Hey there! I'm <strong>Naveen Shankar D</strong> from Tirupur — a tech enthusiast who loves keeping
+              networks
+              alive, secure, and seamlessly connected. I’m currently working as a
+              <strong>Network Data Administrator</strong> at <strong>Wipro Technologies, Coimbatore</strong>,
+              through the <strong>Work Integrated Learning Program (WILP – WASE)</strong>.
+              At <strong>EDOH Shared Services</strong>, I handle network data operations for multiple clients,
+              ensuring every connection stays efficient, stable, and connected.
+            </p>
+
+            <p style="line-height:1.7; color:var(--muted); margin-top:8px">
+              Alongside my role, I’m pursuing an <strong>M.Tech in Software Systems</strong> from
+              <strong>BITS Pilani</strong> — where I’m expanding my knowledge in software engineering, data management,
+              and network technologies. I also hold a <strong>B.Voc in Networking and Mobile Application</strong> from
+              <strong>PSG College of Arts & Science</strong>, and I’m a proud alumnus of its
+              <strong>Department of Networking and Mobile Application</strong>, where my tech journey truly began.
+            </p>
+
+            <p style="line-height:1.7; color:var(--muted); margin-top:8px">
+              My expertise lies in <strong>Network Administration, Cloud Computing, and Cyber Threat
+                Management</strong>,
+              along with a solid foundation in <strong>C, C++, Java, Python, SQL, HTML, CSS, PHP,</strong> and
+              <strong>JavaScript</strong>. Over time, I’ve developed projects like
+              <em>Events Corner</em>, <em>E-Museum</em>, <em>TranX</em>, and <em>Blood Bestow</em> — each built to solve
+              real problems and spark innovation.
+            </p>
+
+            <p style="line-height:1.7; color:var(--muted); margin-top:8px">
+              Beyond tech, I’ve always enjoyed taking the lead — serving as an
+              <strong>IIC Student Ambassador</strong>, <strong>Student Council Member</strong>, and
+              <strong>Association Chairperson</strong>. These experiences taught me how collaboration, communication,
+              and creativity can turn ideas into impact. One of my proudest moments? Winning <strong>Techathon
+                ’22</strong>!
+            </p>
+
+            <p style="line-height:1.7; color:var(--muted); margin-top:8px">
+              I’m also pursuing my <strong>Master of Computer Applications (MCA)</strong> from
+              <strong>Bharathiar University (Online)</strong> to broaden my academic and technical horizons.
+              Always open to new challenges, collaborations, and learning — I believe every connection,
+              digital or human, is a chance to build something incredible. ✨
+            </p>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- EXPERIENCE -->
+      <section id="experience" class="section" role="region" aria-labelledby="experience-title">
+        <h2 id="experience-title">Work Experience</h2>
+        <span class="muted">My career timeline & journey</span>
+
+        <div class="timeline-container">
+
+          <div class="timeline-item left">
+            <div class="content card">
+              <h3>Wipro Technologies</h3>
+              <div class="meta">Network Data Administrator – L1</div>
+              <div class="meta date">Aug 2025 – Present</div>
+              <p class="muted" style="margin-top:8px">
+                Currently working as a Network Data Administrator – L1 at Wipro Technologies, Coimbatore, as part of the
+                Work Integrated Learning Program (WILP). Responsible for system monitoring, network data management, and
+                maintaining secure IT infrastructures.
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-item right">
+            <div class="content card">
+              <h3>Wipro Technologies</h3>
+              <div class="meta">Trainee</div>
+              <div class="meta date">Mar 2025 – Aug 2025</div>
+              <p class="muted" style="margin-top:8px">
+                Completed professional training in enterprise network administration and troubleshooting. Gained
+                practical exposure to live system monitoring and infrastructure security.
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-item left">
+            <div class="content card">
+              <h3>Kaizen Technosoft</h3>
+              <div class="meta">Web Developer Intern</div>
+              <div class="meta date">Dec 2022</div>
+              <p class="muted" style="margin-top:8px">
+                Designed and developed responsive web pages for client projects using HTML, CSS, and JavaScript. Focused
+                on UI/UX improvements and performance optimization.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- EDUCATION -->
+      <section id="education" class="section" role="region" aria-labelledby="education-title">
+        <h2 id="education-title">Education</h2>
+        <span class="muted">Academic background</span>
+
+        <div class="timeline-container">
+
+          <div class="timeline-item left">
+            <div class="content card">
+              <h3>BITS Pilani</h3>
+              <div class="meta">M.Tech — Software Systems (Current)</div>
+              <div class="meta date">2025 – Present</div>
+            </div>
+          </div>
+
+          <div class="timeline-item right">
+            <div class="content card">
+              <h3>Bharathiar University</h3>
+              <div class="meta">MCA — Distance Learning (Current)</div>
+              <div class="meta date">2024 – Present</div>
+            </div>
+          </div>
+
+          <div class="timeline-item left">
+            <div class="content card">
+              <h3>PSG College of Arts & Science</h3>
+              <div class="meta">B.Voc — Networking & Mobile Applications</div>
+              <div class="meta date">2021 – 2024</div>
+            </div>
+          </div>
+
+          <div class="timeline-item right">
+            <div class="content card">
+              <h3>Bharathi Vikas Matric Hr. Sec. School</h3>
+              <div class="meta">Higher Secondary (HSE)</div>
+              <div class="meta date">2019 – 2021</div>
+            </div>
+          </div>
+
+          <div class="timeline-item left">
+            <div class="content card">
+              <h3>Kongu Matric School</h3>
+              <div class="meta">SSLC</div>
+              <div class="meta date">2019</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+
+      <!-- LEADERSHIP & AWARDS -->
+      <section id="leadership" class="section">
+        <h2>Leadership & Awards</h2>
+        <span class="muted">A little glimpse into my journey leading, organizing & growing 🌟</span>
+
+        <div class="leadership-grid">
+          <!-- Card 1 -->
+          <div class="card main-card">
+            <h3>Leadership Experience</h3>
+            <div class="meta">PSG College of Arts & Science</div>
+
+            <div class="sub-cards">
+              <div class="sub-card">
+                <h4>IIC Student Ambassador</h4>
+                <p>Encouraged innovation & startup culture among peers 🚀</p>
+              </div>
+
+              <div class="sub-card">
+                <h4>Association Chairperson</h4>
+                <p>Led department events & networking initiatives 🎯</p>
+              </div>
+
+              <div class="sub-card">
+                <h4>Student Council Member</h4>
+                <p>Represented students and co-organized major fests 🏆</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="card main-card">
+            <h3>Awards & Events</h3>
+            <div class="meta">PSG College of Arts & Science</div>
+
+            <div class="sub-cards">
+              <div class="sub-card">
+                <h4>Techathon ’22 – Winner</h4>
+                <p>Secured top position with an innovative tech solution ⚡</p>
+              </div>
+
+              <div class="sub-card">
+                <h4>Netronics ’23 – Organizer</h4>
+                <p>Coordinated the intercollegiate event bringing tech minds together 🤝</p>
+              </div>
+
+              <div class="sub-card">
+                <h4>Gateway ’24 – Organizer</h4>
+                <p>Handled logistics & student coordination seamlessly 🎤</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="card main-card">
+            <h3>School Leadership</h3>
+            <div class="meta">Bharathi Vikas Matric Hr. Sec. School</div>
+
+            <div class="sub-cards">
+              <div class="sub-card">
+                <h4>Student Representative</h4>
+                <p>Led school teams and anchored cultural events 🎓</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+      <!-- SKILLS -->
+      <section id="skills" class="section" role="region" aria-labelledby="skills-title">
+        <h2 id="skills-title">Skills</h2>
+        <span class="muted">Technical & personal skills</span>
+
+        <div style="margin-top:12px">
+          <!-- Technical -->
+          <h4 style="margin-bottom:8px">Technical</h4>
+          <div class="chips">
+            <div class="chip">Web Development</div>
+            <div class="chip">Cloud Computing & Cyber Security</div>
+            <div class="chip">MS Office Suite</div>
+            <div class="chip">Data Structures (Basics)</div>
+            <div class="chip">Excel & Spreadsheets</div>
+            <div class="chip">Networking</div>
+            <div class="chip">Powerchat (WhatsApp) CRM</div>
+          </div>
+
+          <!-- Programming Languages -->
+          <h4 style="margin:18px 0 8px">Programming Languages</h4>
+          <div class="chips">
+            <div class="chip">C & C++</div>
+            <div class="chip">Java</div>
+            <div class="chip">Python</div>
+            <div class="chip">HTML, PHP & SQL</div>
+          </div>
+
+          <!-- Personal -->
+          <h4 style="margin:18px 0 8px">Personal</h4>
+          <div class="chips">
+            <div class="chip">Interpersonal Communication</div>
+            <div class="chip">Self Starter</div>
+            <div class="chip">Adaptability & Critical Thinking</div>
+            <div class="chip">Leadership & Event Management</div>
+            <div class="chip">Organizational Skills</div>
+          </div>
+
+          <!-- Languages -->
+          <h4 style="margin:18px 0 8px">Languages</h4>
+          <div class="languages">
+            <div class="lang-item">
+              <span>English</span>
+              <div class="rating-bar">
+                <div class="rating-fill" style="width:85%"></div>
+              </div>
+              <p class="level">Working Proficiency</p>
+            </div>
+
+            <div class="lang-item">
+              <span><strong class="neon-text">தமிழ்</strong></span>
+              <div class="rating-bar">
+                <div class="rating-fill" style="width:100%; background:#b287ff"></div>
+              </div>
+              <p class="level">Mother Tongue</p>
+            </div>
+          </div>
+
+          <!-- Hobbies -->
+          <h4 style="margin:18px 0 8px">Hobbies & Interests</h4>
+          <div class="chips">
+            <div class="chip">🌐 Internet Surfing</div>
+            <div class="chip">🍳 Cooking</div>
+            <div class="chip">🎨 Designing</div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- WORKS / PROJECTS -->
+      <section id="works" class="section" role="region" aria-labelledby="works-title">
+        <h2 id="works-title">Best Works</h2>
+        <span class="muted">Selected projects</span>
+
+        <div class="grid cols-2" style="margin-top:14px">
+          <div class="card project">
+            <div class="thumb neon-thumb">CEM</div>
+            <div>
+              <h4>College Event Management System</h4>
+              <p class="muted">Web Development</p>
+            </div>
+          </div>
+
+          <div class="card project">
+            <div class="thumb neon-thumb">EM</div>
+            <div>
+              <h4>E-Museum (Crypto-based Ticketing)</h4>
+              <p class="muted">Web Development</p>
+            </div>
+          </div>
+
+          <div class="card project">
+            <div class="thumb neon-thumb">LBT</div>
+            <div>
+              <h4>Local Bus Ticket Booking</h4>
+              <p class="muted">Web Development</p>
+            </div>
+          </div>
+
+          <div class="card project">
+            <div class="thumb neon-thumb">BDC</div>
+            <div>
+              <h4>Blood Donor Connection</h4>
+              <p class="muted">Web Development</p>
+            </div>
+          </div>
+
+          <div class="card project">
+            <div class="thumb neon-thumb">ATG</div>
+            <div>
+              <h4>Automatic Timetable Generator</h4>
+              <p class="muted">Web Development</p>
+            </div>
+          </div>
+
+          <div class="card project">
+            <div class="thumb neon-thumb">N23</div>
+            <div>
+              <h4>Netronics'23 & 2.0</h4>
+              <p class="muted">Event Management</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STATS -->
+      <section id="stats" class="section" role="region" aria-labelledby="stats-title">
+        <h2 id="stats-title">Numbers That Matter</h2>
+        <span class="muted">Highlights from my journey so far</span>
+
+        <div class="stats chips">
+          <div class="chip">
+            <div class="stat-number">84%</div>
+            <div class="level">Academic Excellence</div>
+          </div>
+
+          <div class="chip">
+            <div class="stat-number">10+</div>
+            <div class="level">Projects Developed</div>
+          </div>
+
+          <div class="chip">
+            <div class="stat-number">10+</div>
+            <div class="level">Certifications</div>
+          </div>
+
+          <div class="chip">
+            <div class="stat-number">3+</div>
+            <div class="level">Leadership Roles</div>
+          </div>
+
+          <div class="chip">
+            <div class="stat-number">.6+ Years</div>
+            <div class="level">Corporate Experience</div>
+          </div>
+
+          <div class="chip">
+            <div class="stat-number">10+</div>
+            <div class="level">Events Organized</div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- SERVICES -->
+      <section id="services" class="section" role="region" aria-labelledby="services-title"
+        style="width:100%; max-width:1200px; margin:40px auto; padding:26px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); box-shadow:0 10px 30px rgba(3,6,15,0.45);">
+        <h2 id="services-title" style="font-size:20px; margin-bottom:6px;">Services</h2>
+        <span class="muted" style="color:#b6bfd0; display:block; margin-bottom:12px;">How I can help</span>
+
+        <div class="services-grid"
+          style="margin-top:12px; display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px;">
+
+          <!-- Event Planning -->
+          <div class="card"
+            style="padding:14px; border-radius:10px; background:rgba(255,255,255,0.01); border:1px solid rgba(255,255,255,0.02);">
+            <h3>Event Planning</h3>
+            <p class="muted" style="color:#b6bfd0;">Organizing seamless events with innovation and leadership.</p>
+            <div class="card-buttons" style="display:flex; gap:10px; margin-top:12px;">
+              <a href="Event-Planning-ns.html" target="_blank"
+                style="display:inline-block; padding:10px 16px; border-radius:12px; text-decoration:none; font-weight:700; color:#fff; background:linear-gradient(90deg, #9b7bff, #5eead4); box-shadow:0 6px 20px rgba(94,234,212,0.2); text-align:center; transition:all 0.3s ease;"
+                onmouseover="this.style.background='linear-gradient(135deg,#9b7bff,#ff6a88,#5eead4)'; this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 0 16px rgba(155,123,255,0.6),0 0 28px rgba(255,106,136,0.5),0 0 42px rgba(94,234,212,0.4)';"
+                onmouseout="this.style.background='linear-gradient(90deg,#9b7bff,#5eead4)'; this.style.transform='none'; this.style.boxShadow='0 6px 20px rgba(94,234,212,0.2)';">View
+                More</a>
+              <a href="book-ns.html" target="_blank"
+                style="display:inline-block; padding:10px 16px; border-radius:12px; text-decoration:none; font-weight:700; color:#fff; background:linear-gradient(90deg,#6d8bff,#ff6a88); box-shadow:0 6px 20px rgba(109,139,255,0.2); text-align:center; transition:all 0.3s ease;"
+                onmouseover="this.style.background='linear-gradient(135deg,#6d8bff,#ff6a88,#9b7bff)'; this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 12px 28px rgba(109,139,255,0.4),0 0 16px rgba(94,234,212,0.3)';"
+                onmouseout="this.style.background='linear-gradient(90deg,#6d8bff,#ff6a88)'; this.style.transform='none'; this.style.boxShadow='0 6px 20px rgba(109,139,255,0.2)';">Book
+                Now</a>
+            </div>
+          </div>
+
+          <!-- Tutoring & Teaching -->
+          <div class="card"
+            style="padding:14px; border-radius:10px; background:rgba(255,255,255,0.01); border:1px solid rgba(255,255,255,0.02);">
+            <h3>Tutoring & Teaching</h3>
+            <p class="muted" style="color:#b6bfd0;">Helping learners grow through structured and personalized sessions.
+            </p>
+            <div class="card-buttons" style="display:flex; gap:10px; margin-top:12px;">
+              <a href="Tutoring-Teaching-ns.html" target="_blank"
+                style="display:inline-block; padding:10px 16px; border-radius:12px; text-decoration:none; font-weight:700; color:#fff; background:linear-gradient(90deg, #9b7bff, #5eead4); box-shadow:0 6px 20px rgba(94,234,212,0.2); text-align:center; transition:all 0.3s ease;"
+                onmouseover="this.style.background='linear-gradient(135deg,#9b7bff,#ff6a88,#5eead4)'; this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 0 16px rgba(155,123,255,0.6),0 0 28px rgba(255,106,136,0.5),0 0 42px rgba(94,234,212,0.4)';"
+                onmouseout="this.style.background='linear-gradient(90deg,#9b7bff,#5eead4)'; this.style.transform='none'; this.style.boxShadow='0 6px 20px rgba(94,234,212,0.2)';">View
+                More</a>
+              <a href="book-ns.html" target="_blank"
+                style="display:inline-block; padding:10px 16px; border-radius:12px; text-decoration:none; font-weight:700; color:#fff; background:linear-gradient(90deg,#6d8bff,#ff6a88); box-shadow:0 6px 20px rgba(109,139,255,0.2); text-align:center; transition:all 0.3s ease;"
+                onmouseover="this.style.background='linear-gradient(135deg,#6d8bff,#ff6a88,#9b7bff)'; this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 12px 28px rgba(109,139,255,0.4),0 0 16px rgba(94,234,212,0.3)';"
+                onmouseout="this.style.background='linear-gradient(90deg,#6d8bff,#ff6a88)'; this.style.transform='none'; this.style.boxShadow='0 6px 20px rgba(109,139,255,0.2)';">Book
+                Now</a>
+            </div>
+          </div>
+
+          <!-- Workshops & Lectures -->
+          <div class="card"
+            style="padding:14px; border-radius:10px; background:rgba(255,255,255,0.01); border:1px solid rgba(255,255,255,0.02);">
+            <h3>Workshops & Lectures</h3>
+            <p class="muted" style="color:#b6bfd0;">Hands-on sessions and talks to inspire and empower audiences.</p>
+            <div class="card-buttons" style="display:flex; gap:10px; margin-top:12px;">
+              <a href="Workshops-Lectures-ns.html" target="_blank"
+                style="display:inline-block; padding:10px 16px; border-radius:12px; text-decoration:none; font-weight:700; color:#fff; background:linear-gradient(90deg, #9b7bff, #5eead4); box-shadow:0 6px 20px rgba(94,234,212,0.2); text-align:center; transition:all 0.3s ease;"
+                onmouseover="this.style.background='linear-gradient(135deg,#9b7bff,#ff6a88,#5eead4)'; this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 0 16px rgba(155,123,255,0.6),0 0 28px rgba(255,106,136,0.5),0 0 42px rgba(94,234,212,0.4)';"
+                onmouseout="this.style.background='linear-gradient(90deg,#9b7bff,#5eead4)'; this.style.transform='none'; this.style.boxShadow='0 6px 20px rgba(94,234,212,0.2)';">View
+                More</a>
+              <a href="book-ns.html" target="_blank"
+                style="display:inline-block; padding:10px 16px; border-radius:12px; text-decoration:none; font-weight:700; color:#fff; background:linear-gradient(90deg,#6d8bff,#ff6a88); box-shadow:0 6px 20px rgba(109,139,255,0.2); text-align:center; transition:all 0.3s ease;"
+                onmouseover="this.style.background='linear-gradient(135deg,#6d8bff,#ff6a88,#9b7bff)'; this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 12px 28px rgba(109,139,255,0.4),0 0 16px rgba(94,234,212,0.3)';"
+                onmouseout="this.style.background='linear-gradient(90deg,#6d8bff,#ff6a88)'; this.style.transform='none'; this.style.boxShadow='0 6px 20px rgba(109,139,255,0.2)';">Book
+                Now</a>
+            </div>
+          </div>
+
+          <!-- Web Development -->
+          <div class="card"
+            style="padding:14px; border-radius:10px; background:rgba(255,255,255,0.01); border:1px solid rgba(255,255,255,0.02);">
+            <h3>Web Development</h3>
+            <p class="muted" style="color:#b6bfd0;">Designing responsive and functional websites for your needs.</p>
+            <div class="card-buttons" style="display:flex; gap:10px; margin-top:12px;">
+              <a href="Web-Development-ns.html" target="_blank"
+                style="display:inline-block; padding:10px 16px; border-radius:12px; text-decoration:none; font-weight:700; color:#fff; background:linear-gradient(90deg, #9b7bff, #5eead4); box-shadow:0 6px 20px rgba(94,234,212,0.2); text-align:center; transition:all 0.3s ease;"
+                onmouseover="this.style.background='linear-gradient(135deg,#9b7bff,#ff6a88,#5eead4)'; this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 0 16px rgba(155,123,255,0.6),0 0 28px rgba(255,106,136,0.5),0 0 42px rgba(94,234,212,0.4)';"
+                onmouseout="this.style.background='linear-gradient(90deg,#9b7bff,#5eead4)'; this.style.transform='none'; this.style.boxShadow='0 6px 20px rgba(94,234,212,0.2)';">View
+                More</a>
+              <a href="book-ns.html" target="_blank"
+                style="display:inline-block; padding:10px 16px; border-radius:12px; text-decoration:none; font-weight:700; color:#fff; background:linear-gradient(90deg,#6d8bff,#ff6a88); box-shadow:0 6px 20px rgba(109,139,255,0.2); text-align:center; transition:all 0.3s ease;"
+                onmouseover="this.style.background='linear-gradient(135deg,#6d8bff,#ff6a88,#9b7bff)'; this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 12px 28px rgba(109,139,255,0.4),0 0 16px rgba(94,234,212,0.3)';"
+                onmouseout="this.style.background='linear-gradient(90deg,#6d8bff,#ff6a88)'; this.style.transform='none'; this.style.boxShadow='0 6px 20px rgba(109,139,255,0.2)';">Book
+                Now</a>
+            </div>
+          </div>
+
+          <!-- Online Classes -->
+          <div class="card"
+            style="padding:14px; border-radius:10px; background:rgba(255,255,255,0.01); border:1px solid rgba(255,255,255,0.02);">
+            <h3>Online Classes</h3>
+            <p class="muted" style="color:#b6bfd0;">Online tutoring for web development & networking.</p>
+            <div class="card-buttons" style="display:flex; gap:10px; margin-top:12px;">
+              <a href="Online-Classes-ns.html" target="_blank"
+                style="display:inline-block; padding:10px 16px; border-radius:12px; text-decoration:none; font-weight:700; color:#fff; background:linear-gradient(90deg, #9b7bff, #5eead4); box-shadow:0 6px 20px rgba(94,234,212,0.2); text-align:center; transition:all 0.3s ease;"
+                onmouseover="this.style.background='linear-gradient(135deg,#9b7bff,#ff6a88,#5eead4)'; this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 0 16px rgba(155,123,255,0.6),0 0 28px rgba(255,106,136,0.5),0 0 42px rgba(94,234,212,0.4)';"
+                onmouseout="this.style.background='linear-gradient(90deg,#9b7bff,#5eead4)'; this.style.transform='none'; this.style.boxShadow='0 6px 20px rgba(94,234,212,0.2)';">View
+                More</a>
+              <a href="book-ns.html" target="_blank"
+                style="display:inline-block; padding:10px 16px; border-radius:12px; text-decoration:none; font-weight:700; color:#fff; background:linear-gradient(90deg,#6d8bff,#ff6a88); box-shadow:0 6px 20px rgba(109,139,255,0.2); text-align:center; transition:all 0.3s ease;"
+                onmouseover="this.style.background='linear-gradient(135deg,#6d8bff,#ff6a88,#9b7bff)'; this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 12px 28px rgba(109,139,255,0.4),0 0 16px rgba(94,234,212,0.3)';"
+                onmouseout="this.style.background='linear-gradient(90deg,#6d8bff,#ff6a88)'; this.style.transform='none'; this.style.boxShadow='0 6px 20px rgba(109,139,255,0.2)';">Book
+                Now</a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+
+
+      <!-- CONTACT -->
+      <section id="contact" class="section" role="region" aria-labelledby="contact-title">
+        <h2 id="contact-title">Get In Touch</h2>
+        <span class="muted">I am passionate about technology and innovation</span>
+
+        <div class="contact-grid" style="margin-top:12px">
+          <form class="card contact-form" action="https://formspree.io/f/mpwyeboy" method="POST" target="_blank"
+            aria-label="Contact form" onsubmit="setTimeout(() => { this.reset(); }, 100)">
+            <input type="text" name="name" placeholder="Your name" required>
+            <input type="text" name="contact" placeholder="Your contact" required>
+            <input type="text" name="sub" placeholder="Subject" required>
+            <textarea name="message" placeholder="Message" required></textarea>
+            <button type="submit"
+              style="padding:12px 18px; border-radius:12px; font-weight:700; color:#fff; background:linear-gradient(90deg,#6d8bff,#ff6a88); transition:transform .2s, box-shadow .3s; display:inline-block;"
+              onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 0 18px rgba(255,106,136,0.5)'"
+              onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
+              Message Me
+            </button>
+          </form>
+
+
+
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="card">
+              <h3>Contact</h3>
+              <div class="meta">darshansenthil21@gmail.com</div>
+              <div class="meta">+91 73977 15273</div>
+            </div>
+
+            <div class="card">
+              <h3>Follow Me</h3>
+              <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap">
+                <a href="https://www.facebook.com/darshan.526053" target="_blank" rel="noopener"
+                  style="text-decoration:none; padding:8px 14px; border-radius:20px; background:#4267B2; color:#fff; font-weight:600; transition:transform .2s, box-shadow .3s;"
+                  onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 0 12px rgba(66,103,178,0.5)'"
+                  onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
+                  Facebook
+                </a>
+                <a href="https://x.com/DARSHANS584180" target="_blank" rel="noopener"
+                  style="text-decoration:none; padding:8px 14px; border-radius:20px; background:#000; color:#fff; font-weight:600; transition:transform .2s, box-shadow .3s;"
+                  onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 0 12px rgba(0,0,0,0.5)'"
+                  onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
+                  X
+                </a>
+                <a href="https://www.instagram.com/sparks_light_ds/" target="_blank" rel="noopener"
+                  style="text-decoration:none; padding:8px 14px; border-radius:20px; background:#E1306C; color:#fff; font-weight:600; transition:transform .2s, box-shadow .3s;"
+                  onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 0 12px rgba(225,48,108,0.5)'"
+                  onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
+                  Instagram
+                </a>
+                <a href="https://github.com/darshansenthil" target="_blank" rel="noopener"
+                  style="text-decoration:none; padding:8px 14px; border-radius:20px; background:#333; color:#fff; font-weight:600; transition:transform .2s, box-shadow .3s;"
+                  onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 0 12px rgba(51,51,51,0.5)'"
+                  onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
+                  GitHub
+                </a>
+                <a href="https://www.linkedin.com/in/sdarsh/" target="_blank" rel="noopener"
+                  style="text-decoration:none; padding:8px 14px; border-radius:20px; background:#0077B5; color:#fff; font-weight:600; transition:transform .2s, box-shadow .3s;"
+                  onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 0 12px rgba(0,119,181,0.5)'"
+                  onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
+                  LinkedIn
+                </a>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3>Get My CV</h3>
+              <div style="margin-top:8px">
+                <a target="_blank" href="cv.pdf"
+                  style="text-decoration:none; padding:12px 18px; border-radius:12px; font-weight:700; color:#fff; background:linear-gradient(90deg,#6d8bff,#ff6a88); transition:transform .2s, box-shadow .3s; display:inline-block;"
+                  onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 0 18px rgba(255,106,136,0.5)'"
+                  onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
+                  Request CV
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- FOOTER -->
+      <footer class="site-footer" role="contentinfo">
+  <div class="version" style="text-align:center; font-weight:bold;">
+    Current Version: <span id="currentVersion"></span> |
+    <a id="otherVersionLink" href="#" style="text-decoration:none; color:#6d8bff; font-weight:bold;">Switch Version</a>
+  </div>
+
+  <div class="socials" aria-hidden="false" style="margin-top:8px; text-align:center;">
+    <a href="https://www.facebook.com/darshan.526053" target="_blank" rel="noopener" aria-label="Facebook"
+      style="margin:0 6px; text-decoration:none;">F</a>
+    <a href="https://x.com/DARSHANS584180" target="_blank" rel="noopener" aria-label="X"
+      style="margin:0 6px; text-decoration:none;">X</a>
+    <a href="https://www.instagram.com/sparks_light_ds/" target="_blank" rel="noopener" aria-label="Instagram"
+      style="margin:0 6px; text-decoration:none;">IG</a>
+    <a href="https://github.com/darshansenthil" target="_blank" rel="noopener" aria-label="GitHub"
+      style="margin:0 6px; text-decoration:none;">GH</a>
+    <a href="https://www.linkedin.com/in/sdarsh/" target="_blank" rel="noopener" aria-label="LinkedIn"
+      style="margin:0 6px; text-decoration:none;">IN</a>
+  </div>
+</footer>
+
+<!-- Script to handle version display -->
+<script>
+  const currentPage = window.location.pathname.split("/").pop();
+  const currentVersionSpan = document.getElementById('currentVersion');
+  const otherVersionLink = document.getElementById('otherVersionLink');
+
+  if (currentPage === 'index.html') {
+    currentVersionSpan.textContent = 'v1.0';
+    otherVersionLink.textContent = 'v2.0';
+    otherVersionLink.href = 'index2.html';
+  } else if (currentPage === 'index2.html') {
+    currentVersionSpan.textContent = 'v2.0';
+    otherVersionLink.textContent = 'v1.0';
+    otherVersionLink.href = 'index.html';
+  } else {
+    currentVersionSpan.textContent = 'v1.0';
+    otherVersionLink.textContent = 'v2.0';
+    otherVersionLink.href = 'index2.html';
+  }
+</script>
+
+    </main>
+  </div>
+
+  <!-- ===== Scripts: interactions & animations (all inline for single-file) ===== -->
+  <script>
+
+    // Simple selector
+    const $ = q => document.querySelector(q);
+    const $$ = q => Array.from(document.querySelectorAll(q));
+
+    // Mobile nav toggle
+    const mobileToggle = $('.mobile-toggle');
+    const nav = $('.site-nav');
+    if (mobileToggle) {
+      mobileToggle.addEventListener('click', () => {
+        if (nav.style.display === 'flex') {
+          nav.style.display = '';
+          mobileToggle.textContent = '☰';
+        } else {
+          nav.style.display = 'flex';
+          nav.style.flexDirection = 'column';
+          nav.style.gap = '6px';
+          mobileToggle.textContent = '✕';
+        }
+      });
+    }
+
+    // Smooth scroll to ID with offset for sticky nav
+    function scrollToId(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const navH = 84; // offset
+      const y = el.getBoundingClientRect().top + window.scrollY - navH;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+      // close mobile nav if open
+      if (window.innerWidth < 820 && nav.style.display === 'flex') {
+        nav.style.display = '';
+        mobileToggle.textContent = '☰';
+      }
+    }
+
+    // Attach nav click handlers
+    $$('.nav-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href') || '';
+        if (href.startsWith('#')) {
+          e.preventDefault();
+          const id = href.replace('#', '');
+          scrollToId(id);
+        }
+      });
+    });
+
+    // ScrollSpy using IntersectionObserver
+    const sections = ['intro', 'about', 'experience', 'education', 'skills', 'works', 'services', 'contact'];
+    const navLinks = $$('.nav-link');
+    const observerOptions = { root: null, rootMargin: '-30% 0px -40% 0px', threshold: 0 };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const id = entry.target.id;
+        if (entry.isIntersecting) {
+          navLinks.forEach(n => n.classList.remove('active'));
+          const active = document.querySelector('.nav-link[href="#' + id + '"]');
+          if (active) active.classList.add('active');
+        }
+      });
+    }, observerOptions);
+    sections.forEach(s => {
+      const el = document.getElementById(s);
+      if (el) observer.observe(el);
+    });
+
+    // Simple fade-in reveal for cards/sections (fallback for GSAP)
+    function revealOnScroll() {
+      document.querySelectorAll('.card, .section, .project, .testi').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < (window.innerHeight - 80)) {
+          el.style.opacity = 1;
+          el.style.transform = 'translateY(0)';
+          el.style.transition = 'all .6s cubic-bezier(.2,.9,.2,1)';
+        } else {
+          el.style.opacity = 0;
+          el.style.transform = 'translateY(10px)';
+        }
+      });
+    }
+    // initial setup
+    document.querySelectorAll('.card, .section, .project, .testi').forEach(el => { el.style.opacity = 0; el.style.transform = 'translateY(10px)'; });
+
+    window.addEventListener('scroll', revealOnScroll);
+    window.addEventListener('load', () => {
+      revealOnScroll();
+      // small logo bob
+      if (window.gsap) {
+        gsap.to('#logoNS', { y: -6, duration: 1.8, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+        gsap.utils.toArray('.card').forEach((c, i) => {
+          gsap.from(c, { y: 18, opacity: 0, duration: 0.7, delay: i * 0.05, ease: 'power3.out' });
+        });
+        // hero animations
+        gsap.from('.kicker', { y: 8, opacity: 0, duration: 0.8 });
+        gsap.from('.title', { y: 18, opacity: 0, duration: 0.9, delay: 0.1 });
+        gsap.from('.lead', { y: 18, opacity: 0, duration: 0.9, delay: 0.25 });
+        gsap.from('.btn', { y: 12, opacity: 0, duration: 0.9, delay: 0.35, stagger: 0.08 });
+      } else {
+        // fallback simple transitions
+        document.querySelectorAll('.card').forEach((c, i) => setTimeout(() => { c.style.opacity = 1; c.style.transform = 'translateY(0)'; }, 200 + i * 70));
+      }
+    });
+
+    // Avatar 3D tilt - small parallax
+    const avatar = document.getElementById('ns-avatar');
+    if (avatar) {
+      window.addEventListener('mousemove', (e) => {
+        const rect = avatar.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const dx = e.clientX - cx;
+        const dy = e.clientY - cy;
+        const rx = dy / 30;
+        const ry = -dx / 30;
+        avatar.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+      window.addEventListener('mouseleave', () => avatar.style.transform = 'none');
+    }
+
+    // Particles (small floating dots) - lightweight
+    (function createParticles() {
+      const count = window.innerWidth < 600 ? 14 : 28;
+      const container = document.createElement('div');
+      container.style.position = 'fixed';
+      container.style.inset = '0';
+      container.style.zIndex = -4;
+      container.style.pointerEvents = 'none';
+      document.body.appendChild(container);
+      for (let i = 0; i < count; i++) {
+        const d = document.createElement('div');
+        const size = Math.random() * 8 + 4;
+        d.style.width = size + 'px';
+        d.style.height = size + 'px';
+        d.style.borderRadius = '50%';
+        d.style.position = 'absolute';
+        d.style.left = (Math.random() * 110 - 5) + 'vw';
+        d.style.top = (Math.random() * 100) + 'vh';
+        d.style.background = 'rgba(255,255,255,' + (Math.random() * 0.08 + 0.02) + ')';
+        d.style.filter = 'blur(6px)';
+        d.style.animation = `floaty ${Math.random() * 16 + 10}s linear infinite`;
+        d.style.opacity = (Math.random() * 0.6 + 0.1).toString();
+        container.appendChild(d);
+      }
+      const style = document.createElement('style');
+      style.textContent = `@keyframes floaty { 0%{transform:translateY(0) } 50%{transform:translateY(-40vh) } 100%{transform:translateY(0)} }`;
+      document.head.appendChild(style);
+    })();
+
+    // Contact form placeholder
+    function handleContact(e) {
+      e.preventDefault();
+      const form = e.target;
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
+      if (!name || !email || !message) {
+        alert('Please complete the form before sending.');
+        return;
+      }
+      const btn = form.querySelector('button[type="submit"]');
+      const old = btn.innerText;
+      btn.innerText = 'Sending…';
+      setTimeout(() => {
+        alert('Thanks, ' + name + '! Message simulated as sent. I will reach out soon.');
+        form.reset();
+        btn.innerText = old;
+      }, 900);
+    }
+  </script>
+
+</body>
+
+</html>
